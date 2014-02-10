@@ -1,4 +1,4 @@
-# fluent-plugin-retag
+# fluent-plugin-retag, a plugin for [Fluentd](http://fluentd.org)
 
 ## Overview
 
