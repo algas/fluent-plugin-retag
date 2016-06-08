@@ -62,7 +62,7 @@ class Fluent::RetagOutput < Fluent::Output
             tag
           end
     es.each do |time,record|
-      Fluent::Engine.emit(tag, time, record)
+      router.emit(tag, time, record)
     end
     chain.next
   end
