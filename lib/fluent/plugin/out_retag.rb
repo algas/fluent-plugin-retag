@@ -1,5 +1,9 @@
-class Fluent::RetagOutput < Fluent::Output
+require 'fluent/plugin/output'
+
+class Fluent::Plugin::RetagOutput < Fluent::Plugin::Output
   Fluent::Plugin.register_output('retag', self)
+
+  helpers :event_emitter
 
   config_param :tag, :string, :default => nil
   config_param :remove_prefix, :string, :default => nil
@@ -29,11 +33,11 @@ class Fluent::RetagOutput < Fluent::Output
       @removed_suffix_pos = 0 - @removed_suffix_length
     end
     if @add_suffix
-      @added_suffix_string = '.' + @add_suffix 
+      @added_suffix_string = '.' + @add_suffix
     end
   end
 
-  def emit(tag, es, chain)
+  def process(tag, es)
     tag = if @tag
             @tag
           else
@@ -44,15 +48,15 @@ class Fluent::RetagOutput < Fluent::Output
             if @remove_prefix and
                 ( (tag.start_with?(@removed_prefix_string) and tag.length > @removed_length) or tag == @remove_prefix)
               tag = tag[@removed_length..-1]
-            end 
-            if @add_prefix 
+            end
+            if @add_prefix
               tag = if tag and tag.length > 0
                       @added_prefix_string + tag
                     else
                       @add_prefix
                     end
             end
-            if @add_suffix 
+            if @add_suffix
               tag = if tag and tag.length > 0
                       tag + @added_suffix_string
                     else
@@ -64,7 +68,5 @@ class Fluent::RetagOutput < Fluent::Output
     es.each do |time,record|
       router.emit(tag, time, record)
     end
-    chain.next
   end
 end
-
