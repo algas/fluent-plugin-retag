@@ -16,8 +16,8 @@ class RetagOutputTest < Test::Unit::TestCase
     add_prefix head
   ]
 
-  def create_driver(conf = CONFIG, tag='test')
-    Fluent::Test::OutputTestDriver.new(Fluent::RetagOutput, tag).configure(conf)
+  def create_driver(conf = CONFIG)
+    Fluent::Test::Driver::Output.new(Fluent::Plugin::RetagOutput).configure(conf)
   end
 
   def test_configure
@@ -51,46 +51,42 @@ class RetagOutputTest < Test::Unit::TestCase
   end
 
   def test_emit
-    d = create_driver(CONFIG, 'foo.bar')
-    time = Time.parse('2011-03-11 14:46:01').to_i
-    d.run do
-      d.emit({'a' => 'b'})
-      d.emit({'c' => 'd'})
+    d = create_driver(CONFIG)
+    time = event_time('2011-03-11 14:46:01')
+    d.run(default_tag: 'foo.bar') do
+      d.feed(time, {'a' => 'b'})
+      d.feed(time, {'c' => 'd'})
     end
-    emits = d.emits
+    emits = d.events
     assert_equal 2, emits.length
-    p emits[0]
     assert_equal 'hoge', emits[0][0]
     assert_equal 'b', emits[0][2]['a']
   end
 
   def test_emit2
-    d = create_driver(CONFIG2, 'foo.bar')
-    time = Time.parse('2011-03-11 14:46:01').to_i
-    d.run do
-      d.emit({'a' => 'b'})
-      d.emit({'c' => 'd'})
+    d = create_driver(CONFIG2)
+    time = event_time('2011-03-11 14:46:01')
+    d.run(default_tag: 'foo.bar') do
+      d.feed(time, {'a' => 'b'})
+      d.feed(time, {'c' => 'd'})
     end
-    emits = d.emits
+    emits = d.events
     assert_equal 2, emits.length
-    p emits[0]
     assert_equal 'bar', emits[0][0]
     assert_equal 'b', emits[0][2]['a']
   end
 
   def test_emit3
-    d = create_driver(CONFIG3, 'foo.bar')
-    time = Time.parse('2011-03-11 14:46:01').to_i
-    d.run do
-      d.emit({'a' => 'b'})
-      d.emit({'c' => 'd'})
+    d = create_driver(CONFIG3)
+    time = event_time('2011-03-11 14:46:01')
+    d.run(default_tag: 'foo.bar') do
+      d.feed(time, {'a' => 'b'})
+      d.feed(time, {'c' => 'd'})
     end
-    emits = d.emits
+    emits = d.events
     assert_equal 2, emits.length
-    p emits[0]
     assert_equal 'head.bar', emits[0][0]
     assert_equal 'b', emits[0][2]['a']
   end
 
 end
-
