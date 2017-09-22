@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
   gem.name          = "fluent-plugin-retag"
-  gem.version       = "0.0.2"
+  gem.version       = "0.1.0"
   gem.authors       = ["Masahiro Yamauchi"]
   gem.email         = ["sgt.yamauchi@gmail.com"]
   gem.description   = %q{Output filter plugin to retag}
