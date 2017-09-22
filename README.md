@@ -15,14 +15,14 @@ Output plugin only retagging.
 To retag foo.bar to hoge.fuga:
 
     <match foo.bar>
-      type retag
+      @type retag
       tag hoge.fuga
     </match>
 
 To retag foo.bar.** to xyz.bar.**:
 
     <match foo.bar>
-      type retag
+      @type retag
       remove_prefix foo
       add_prefix xyz
     </match>
@@ -32,9 +32,9 @@ To retag foo.bar.** to xyz.bar.**:
 If you want to use branch condition, it is useful to use out_copy with fluent-plugin-retag.
 
     <match foo.bar.**>
-      type copy
+      @type copy
       <store>
-        type retag
+        @type retag
         add_prefix copied
       </store>
       <store>
