@@ -1,0 +1,8 @@
+box: ruby:2.3.5
+build:
+  steps:
+    - bundle-install
+    - script:
+        name: run test
+        code: bundle exec rake test
+
