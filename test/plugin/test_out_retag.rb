@@ -41,6 +41,7 @@ class RetagOutputTest < Test::Unit::TestCase
     ]
     d1.instance.inspect
     assert_equal 'a', d1.instance.tag
+    assert_true d1.instance.multi_workers_ready?
     d2 = create_driver %[
       remove_prefix b
       add_prefix c

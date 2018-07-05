@@ -37,6 +37,10 @@ class Fluent::Plugin::RetagOutput < Fluent::Plugin::Output
     end
   end
 
+  def multi_workers_ready?
+    true
+  end
+
   def process(tag, es)
     tag = if @tag
             @tag
